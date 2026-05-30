@@ -30,8 +30,8 @@ jobs:
           cp pubspec.yaml ../temp_pubspec.yaml || true
           rm -rf * .github
           
-          # ফ্রেশ প্রজেক্ট জেনারেট (যা সব কনফিগারেশন অটোমেটিক v2 এমবেডিংয়ে সেট করবে)
-          flutter create --platforms=android .
+          # কাস্টম প্রজেক্ট নেম দিয়ে ফ্রেশ প্রজেক্ট জেনারেট (হাইফেন এরর দূর করার জন্য)
+          flutter create --platforms=android --project-name=lekhok_app .
           
           # আপনার কাস্টম কোড ও ডিপেন্ডেন্সি ফিরিয়ে আনা
           rm -rf lib
