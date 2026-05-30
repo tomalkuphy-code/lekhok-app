@@ -22,10 +22,16 @@ jobs:
         with:
           flutter-version: '3.19.x'
 
-      - name: Create Android Manifest Automatically
+      - name: Create Complete Android Project Structure Automatically
         run: |
-          mkdir -p android/app/src/main
-          echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android"><uses-permission android:name="android.permission.INTERNET" /><application android:label="Lekhok.me"><activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter></activity></application></manifest>' > android/app/src/main/AndroidManifest.xml
+          # Create all required directories
+          mkdir -p android/app/src/main/java/com/example/lekhok_app
+          
+          # Create AndroidManifest.xml structure
+          echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.lekhok_app"><uses-permission android:name="android.permission.INTERNET" /><application android:label="Lekhok.me" android:icon="@mipmap/ic_launcher"><activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|screenLayout|density|uiMode" android:hardwareAccelerated="true"><intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter></activity><meta-data android:name="flutterEmbedding" android:value="2" /></application></manifest>' > android/app/src/main/AndroidManifest.xml
+          
+          # Create MainActivity.java to resolve Android v2 Embedding
+          echo 'package com.example.lekhok_app; import io.flutter.embedding.android.FlutterActivity; public class MainActivity extends FlutterActivity { }' > android/app/src/main/java/com/example/lekhok_app/MainActivity.java
 
       - name: Install Dependencies
         run: flutter pub get
