@@ -22,22 +22,28 @@ jobs:
         with:
           flutter-version: '3.19.x'
 
-      - name: Create Complete Android Project Structure Automatically
+      - name: Recreate Safe Flutter Structure
         run: |
-          # Create all required directories
-          mkdir -p android/app/src/main/java/com/example/lekhok_app
+          # ব্যাকআপ ও পুরোনো ফাইল ক্লিনআপ
+          mkdir -p ../temp_lib
+          cp -r lib/* ../temp_lib/ || true
+          cp pubspec.yaml ../temp_pubspec.yaml || true
+          rm -rf * .github
           
-          # Create AndroidManifest.xml structure
-          echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.lekhok_app"><uses-permission android:name="android.permission.INTERNET" /><application android:label="Lekhok.me" android:icon="@mipmap/ic_launcher"><activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|screenLayout|density|uiMode" android:hardwareAccelerated="true"><intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter></activity><meta-data android:name="flutterEmbedding" android:value="2" /></application></manifest>' > android/app/src/main/AndroidManifest.xml
+          # ফ্রেশ প্রজেক্ট জেনারেট (যা সব কনফিগারেশন অটোমেটিক v2 এমবেডিংয়ে সেট করবে)
+          flutter create --platforms=android .
           
-          # Create MainActivity.java to resolve Android v2 Embedding
-          echo 'package com.example.lekhok_app; import io.flutter.embedding.android.FlutterActivity; public class MainActivity extends FlutterActivity { }' > android/app/src/main/java/com/example/lekhok_app/MainActivity.java
+          # আপনার কাস্টম কোড ও ডিপেন্ডেন্সি ফিরিয়ে আনা
+          rm -rf lib
+          mkdir -p lib
+          cp -r ../temp_lib/* lib/ || true
+          cp ../temp_pubspec.yaml pubspec.yaml || true
 
       - name: Install Dependencies
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release --no-pub
+        run: flutter build apk --release
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
