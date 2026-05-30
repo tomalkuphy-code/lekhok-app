@@ -8,15 +8,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # ওয়ার্নিং দূর করার জন্য এনভায়রনমেন্ট যুক্ত করা হলো
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'oracle'
           java-version: '17'
 
       - name: Set up Flutter
@@ -24,13 +22,18 @@ jobs:
         with:
           flutter-version: '3.19.x'
 
+      - name: Create Android Manifest Automatically
+        run: |
+          mkdir -p android/app/src/main
+          echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android"><uses-permission android:name="android.permission.INTERNET" /><application android:label="Lekhok.me"><activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter></activity></application></manifest>' > android/app/src/main/AndroidManifest.xml
+
       - name: Install Dependencies
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --no-pub
 
-      - name: Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: lekhok-me-release-apk
