@@ -1,0 +1,11 @@
+name: lekhok_app
+description: Lekhok.me WebView App
+version: 1.0.0+1
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  webview_flutter: ^4.14.0
+flutter:
+  uses-material-design: true
