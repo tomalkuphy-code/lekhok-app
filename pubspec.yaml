@@ -7,7 +7,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter: ^4.14.0
+  webview_flutter: ^4.8.0 # সংস্করণটি পরিবর্তন করে ৪.৮.০ করা হলো
 
 flutter:
   uses-material-design: true
